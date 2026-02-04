@@ -62,9 +62,11 @@ import ScrollIndicator from './ScrollIndicator.astro';
         }
         // Show content after command finishes
         setTimeout(() => {
-          heroContent.style.transition = 'opacity 0.8s ease-in';
-          heroContent.classList.remove('opacity-0');
-          heroContent.classList.add('opacity-100');
+          if (heroContent) {
+            heroContent.style.transition = 'opacity 0.8s ease-in';
+            heroContent.classList.remove('opacity-0');
+            heroContent.classList.add('opacity-100');
+          }
         }, 300);
       }
     }
