@@ -1,16 +1,16 @@
 ---
 ---
 
-<div id="page-loader" class="fixed inset-0 z-[9998] bg-black text-green-400 dark:text-green-400 font-mono flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200">
+<div id="page-loader" class="fixed inset-0 z-[9998] bg-black font-mono flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200">
   <div class="w-full max-w-3xl px-6 md:px-12">
-    <div class="mb-6 text-xs md:text-sm text-green-500/70">
+    <div class="mb-6 text-xs md:text-sm">
       <div class="flex items-center gap-2 mb-2">
-        <span class="terminal-prompt">jake@portfolio</span>:<span class="text-blue-400">~</span>$ 
+        <span class="text-green-400">jake@portfolio</span>:<span class="text-green-400">~</span>$ 
         <span id="loader-cursor" class="inline-block w-2 h-4 bg-green-400 animate-pulse"> </span>
       </div>
     </div>
     <div id="loader-output" class="space-y-1 text-xs md:text-sm font-mono">
-      <div class="text-green-300/70">Loading...</div>
+      <div class="text-green-400">Loading...</div>
     </div>
   </div>
 </div>
@@ -19,25 +19,68 @@
   (function() {
     const loader = document.getElementById('page-loader');
     const cursor = document.getElementById('loader-cursor');
+    const output = document.getElementById('loader-output');
     
-    if (!loader) return;
+    if (!loader || !output) return;
 
-    function showLoader(message) {
-      const output = document.getElementById('loader-output');
-      if (output) {
-        output.innerHTML = '<div class="text-green-300/70">' + message + '</div>';
-      }
-      loader.classList.remove('opacity-0', 'pointer-events-none');
-      loader.classList.add('opacity-100');
-      if (cursor) cursor.style.display = 'inline-block';
-    }
+    let isAnimating = false;
 
     function hideLoader() {
       loader.classList.add('opacity-0', 'pointer-events-none');
       loader.classList.remove('opacity-100');
       setTimeout(function() {
         if (cursor) cursor.style.display = 'none';
+        output.innerHTML = '';
       }, 200);
+    }
+
+    function typeCommand(command, callback) {
+      if (!cursor) return;
+      cursor.style.display = 'inline-block';
+      
+      const commandLine = document.createElement('div');
+      commandLine.className = 'flex items-center gap-2 mb-2';
+      commandLine.innerHTML = '<span class="text-green-400">jake@portfolio</span>:<span class="text-green-400">~</span>$ <span class="command-text text-green-400"></span>';
+      output.innerHTML = '';
+      output.appendChild(commandLine);
+      
+      const commandText = commandLine.querySelector('.command-text');
+      let charIndex = 0;
+      
+      function typeChar() {
+        if (charIndex < command.length && commandText) {
+          commandText.textContent += command[charIndex];
+          charIndex++;
+          setTimeout(typeChar, 50);
+        } else {
+          if (cursor) cursor.style.display = 'none';
+          setTimeout(callback, 300);
+        }
+      }
+      
+      typeChar();
+    }
+
+    function showLoadingMessage(message) {
+      const loadingLine = document.createElement('div');
+      loadingLine.className = 'text-green-400 ml-8';
+      loadingLine.textContent = message;
+      output.appendChild(loadingLine);
+    }
+
+    function showLoader(command, message, href) {
+      if (isAnimating) return;
+      isAnimating = true;
+      
+      loader.classList.remove('opacity-0', 'pointer-events-none');
+      loader.classList.add('opacity-100');
+      
+      typeCommand(command, function() {
+        showLoadingMessage(message);
+        setTimeout(function() {
+          window.location.href = href;
+        }, 800);
+      });
     }
 
     // Intercept link clicks
@@ -52,22 +95,28 @@
         if (href && href.indexOf('#') !== 0) {
           e.preventDefault();
           
-          // Determine message based on route
-          var message = 'Loading...';
+          // Determine command and message based on route
+          var command = '';
+          var message = '';
+          
           if (href.indexOf('/projects') !== -1 && href.split('/').length > 3) {
+            // Individual project page
+            command = 'cd projects/' + href.split('/').pop();
             message = 'Loading project...';
           } else if (href.indexOf('/projects') !== -1) {
+            // Projects listing page
+            command = 'cd projects';
             message = 'Loading all projects...';
           } else if (href === '/' || href.indexOf('/index') !== -1) {
+            // Home page
+            command = 'cd ..';
             message = 'Loading home...';
+          } else {
+            command = 'cd ' + href;
+            message = 'Loading...';
           }
           
-          showLoader(message);
-          
-          // Navigate after brief delay
-          setTimeout(function() {
-            window.location.href = href;
-          }, 300);
+          showLoader(command, message, href);
         }
       }
     });
@@ -75,13 +124,16 @@
     // Hide loader when page loads
     window.addEventListener('load', function() {
       setTimeout(hideLoader, 200);
+      isAnimating = false;
     });
 
     if (document.readyState === 'complete') {
       setTimeout(hideLoader, 200);
+      isAnimating = false;
     } else {
       document.addEventListener('DOMContentLoaded', function() {
         setTimeout(hideLoader, 200);
+        isAnimating = false;
       });
     }
   })();

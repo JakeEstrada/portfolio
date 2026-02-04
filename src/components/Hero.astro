@@ -6,102 +6,70 @@
     <div class="max-w-5xl mx-auto text-center">
       <div class="mb-8 font-mono text-sm text-neutral-500 dark:text-neutral-500">
         <span class="terminal-prompt">jake@portfolio</span>:<span class="terminal-path">~</span>$ 
-        <span class="text-neutral-900 dark:text-neutral-100">cat about.txt</span>
+        <span id="whoami-command" class="text-neutral-900 dark:text-neutral-100"></span>
+        <span id="whoami-cursor" class="inline-block w-2 h-4 bg-green-400 animate-pulse ml-1" style="display: none;"></span>
       </div>
-      <h1 id="whoami-text" class="text-3xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-4 text-neutral-900 dark:text-neutral-100 leading-[1.1] font-mono opacity-0">
-        $ whoami
-      </h1>
-      <div id="name-text" class="mb-8 font-mono text-lg text-neutral-700 dark:text-neutral-300 opacity-0">
-        Jake Estrada
-      </div>
-      <div id="title-text" class="mb-4 font-mono text-sm text-neutral-600 dark:text-neutral-400 opacity-0">
-        Software Engineer | Full-Stack | Systems & Applied ML
-      </div>
-      <div id="description-text" class="mb-12 space-y-2 text-neutral-600 dark:text-neutral-400 font-mono text-sm md:text-base leading-relaxed max-w-2xl mx-auto opacity-0">
-        <p class="terminal-line">
-          <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">echo</span> "Building tools that solve real operational problems"
-        </p>
-        <p class="terminal-line text-neutral-700 dark:text-neutral-300">
-          Building tools that solve real operational problems
-        </p>
-        <p class="terminal-line mt-4">
-          <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">cat</span> focus.txt
-        </p>
-        <p class="terminal-line text-neutral-700 dark:text-neutral-300">
-          Full-stack web development, embedded systems, and applied machine learning
-        </p>
-      </div>
-      <div id="buttons-text" class="flex flex-wrap gap-3 justify-center opacity-0">
-        <a href="/projects" class="btn-primary">
-          projects
-        </a>
-        <a href="/#contact" class="btn-secondary">
-          contact
-        </a>
+      
+      <div id="hero-content" class="opacity-0 border border-neutral-300 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950 p-8 md:p-12 max-w-2xl mx-auto">
+        <div id="name-text" class="mb-4 font-mono text-2xl md:text-3xl font-semibold text-neutral-900 dark:text-neutral-100">
+          Jake Estrada
+        </div>
+        <div id="title-text" class="mb-6 font-mono text-base md:text-lg text-neutral-700 dark:text-neutral-300">
+          Software Engineer
+        </div>
+        <div id="subtitle-text" class="mb-8 font-mono text-sm md:text-base text-neutral-600 dark:text-neutral-400">
+          Full-Stack • Systems • Applied ML
+        </div>
+        <div id="description-text" class="mb-12 font-mono text-sm md:text-base text-neutral-700 dark:text-neutral-300">
+          &gt; Building tools that solve real operational problems
+        </div>
+        <div class="flex flex-wrap gap-3 justify-center" id="hero-buttons">
+          <a href="/projects" class="btn-primary">
+            [ projects ]
+          </a>
+          <a href="/#contact" class="btn-secondary">
+            [ contact ]
+          </a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const whoami = document.getElementById('whoami-text');
-    const name = document.getElementById('name-text');
-    const title = document.getElementById('title-text');
-    const description = document.getElementById('description-text');
-    const buttons = document.getElementById('buttons-text');
+  document.addEventListener('DOMContentLoaded', () => {
+    const whoamiCommandEl = document.getElementById('whoami-command');
+    const whoamiCursor = document.getElementById('whoami-cursor');
+    const heroContent = document.getElementById('hero-content');
     
-    if (whoami) {
-      // Animate whoami typing
-      const whoamiText = '$ whoami';
-      let charIndex = 0;
-      
-      function typeWhoami() {
-        if (charIndex < whoamiText.length && whoami) {
-          whoami.textContent = whoamiText.substring(0, charIndex + 1);
-          charIndex++;
-          setTimeout(typeWhoami, 80);
-        } else {
-          // After whoami finishes, fade in other elements
-          setTimeout(() => {
-            if (name) {
-              name.classList.remove('opacity-0');
-              name.classList.add('opacity-100', 'transition-opacity', 'duration-500');
-            }
-            setTimeout(() => {
-              if (title) {
-                title.classList.remove('opacity-0');
-                title.classList.add('opacity-100', 'transition-opacity', 'duration-500');
-              }
-              setTimeout(() => {
-                if (description) {
-                  description.classList.remove('opacity-0');
-                  description.classList.add('opacity-100', 'transition-opacity', 'duration-500');
-                }
-                setTimeout(() => {
-                  if (buttons) {
-                    buttons.classList.remove('opacity-0');
-                    buttons.classList.add('opacity-100', 'transition-opacity', 'duration-500');
-                  }
-                }, 200);
-              }, 200);
-            }, 200);
-          }, 300);
+    if (!whoamiCommandEl || !whoamiCursor || !heroContent) return;
+
+    const whoamiCommand = "whoami";
+    let charIndex = 0;
+
+    function typeWhoami() {
+      if (charIndex < whoamiCommand.length && whoamiCommandEl) {
+        whoamiCommandEl.textContent = whoamiCommand.substring(0, charIndex + 1);
+        charIndex++;
+        setTimeout(typeWhoami, 70);
+      } else {
+        // Hide cursor after typing
+        if (whoamiCursor) {
+          whoamiCursor.style.display = 'none';
         }
+        // Show content after command finishes
+        setTimeout(() => {
+          heroContent.style.transition = 'opacity 0.8s ease-in';
+          heroContent.classList.remove('opacity-0');
+          heroContent.classList.add('opacity-100');
+        }, 300);
       }
-      
-      // Start typing after a brief delay
-      setTimeout(() => {
-        whoami.classList.remove('opacity-0');
-        whoami.classList.add('opacity-100', 'transition-opacity', 'duration-300');
-        setTimeout(typeWhoami, 200);
-      }, 300);
     }
+
+    // Show cursor and start typing
+    if (whoamiCursor) {
+      whoamiCursor.style.display = 'inline-block';
+    }
+    setTimeout(typeWhoami, 200);
   });
 </script>
-
-<style>
-  #whoami-text, #name-text, #title-text, #description-text, #buttons-text {
-    transition: opacity 0.5s ease-in;
-  }
-</style>
