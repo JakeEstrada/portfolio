@@ -1,0 +1,43 @@
+---
+---
+
+<div class="flex justify-center items-center gap-2 pt-32 pb-8">
+  <div class="scroll-dot"></div>
+  <div class="scroll-dot"></div>
+  <div class="scroll-dot"></div>
+</div>
+
+<style>
+  .scroll-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: currentColor;
+    opacity: 0.6;
+    animation: scroll-wave 1.4s ease-in-out infinite;
+  }
+  
+  .scroll-dot:nth-child(1) {
+    animation-delay: 0s;
+  }
+  
+  .scroll-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .scroll-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes scroll-wave {
+    0%, 60%, 100% {
+      transform: translateY(0);
+      opacity: 0.6;
+    }
+    30% {
+      transform: translateY(-10px);
+      opacity: 1;
+    }
+  }
+</style>
+
