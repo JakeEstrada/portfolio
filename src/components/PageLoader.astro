@@ -92,7 +92,11 @@
       
       if (target && target.href && target.href.indexOf(window.location.origin) === 0) {
         var href = target.getAttribute('href');
-        if (href && href.indexOf('#') !== 0) {
+        // Skip hash links (anchor links) - let them work normally
+        if (href && href.indexOf('#') === 0) {
+          return; // Allow hash links to work normally
+        }
+        if (href && href.indexOf('#') === -1 || href.split('#')[0] !== window.location.pathname) {
           e.preventDefault();
           
           // Determine command and message based on route
