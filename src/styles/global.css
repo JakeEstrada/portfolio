@@ -29,10 +29,6 @@
 }
 
 @layer components {
-  .terminal-prompt {
-    @apply text-green-500 dark:text-green-400;
-  }
-
   .terminal-path {
     @apply text-blue-500 dark:text-blue-400;
   }
@@ -101,4 +97,40 @@
 
 ::-webkit-scrollbar-thumb {
   @apply bg-neutral-300 dark:bg-neutral-800;
+}
+
+/* Rainbow color cycle animation - must be outside @layer */
+@keyframes rainbow-cycle {
+  0% {
+    color: hsl(0, 100%, 60%);
+  }
+  14.28% {
+    color: hsl(30, 100%, 60%);
+  }
+  28.56% {
+    color: hsl(60, 100%, 60%);
+  }
+  42.84% {
+    color: hsl(120, 100%, 60%);
+  }
+  57.12% {
+    color: hsl(180, 100%, 60%);
+  }
+  71.4% {
+    color: hsl(240, 100%, 60%);
+  }
+  85.68% {
+    color: hsl(270, 100%, 60%);
+  }
+  100% {
+    color: hsl(360, 100%, 60%);
+  }
+}
+
+/* Apply rainbow animation - outside @layer for maximum priority */
+.terminal-prompt,
+.comment-line,
+.rainbow-arrow,
+.rainbow-filename {
+  animation: rainbow-cycle 15s linear infinite !important;
 }

@@ -23,13 +23,13 @@ const skills = {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-mono text-sm">
           {Object.entries(skills).map(([category, items]) => (
             <div class="content-item">
-              <div class="text-green-500 dark:text-green-400 mb-3">
-                <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">cat</span> {category.toLowerCase().replace(/\s+/g, '-').replace(/[()]/g, '')}.txt
+              <div class="mb-3">
+                <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">cat</span> <span class="rainbow-filename">{category.toLowerCase().replace(/\s+/g, '-').replace(/[()]/g, '')}.txt</span>
               </div>
               <ul class="space-y-1 text-neutral-700 dark:text-neutral-300">
                 {items.map((item) => (
                   <li class="flex items-center gap-2">
-                    <span class="text-green-500 dark:text-green-400">→</span>
+                    <span class="rainbow-arrow">→</span>
                     {item}
                   </li>
                 ))}
@@ -39,7 +39,7 @@ const skills = {
         </div>
         <div class="mt-6 pt-4 border-t border-neutral-200 dark:border-neutral-900 content-item">
           <p class="font-mono text-xs text-neutral-600 dark:text-neutral-400">
-            <span class="text-green-500 dark:text-green-400">//</span> Familiar with: Java, Visual Basic
+            <span class="comment-line">//</span> Familiar with: Java, Visual Basic
           </p>
         </div>
       </div>
