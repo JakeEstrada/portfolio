@@ -1,0 +1,141 @@
+---
+interface Props {
+  command: string;
+  output: string;
+  delay?: number;
+  targetId?: string;
+}
+
+const { command, output, delay = 50 } = Astro.props;
+const id = `terminal-${Math.random().toString(36).substring(2, 11)}`;
+const targetId = Astro.props.targetId || `content-${id}`;
+---
+
+<div 
+  id={id}
+  class="terminal-animation opacity-0"
+  data-command={command}
+  data-output={output}
+  data-delay={delay}
+  data-target={targetId}
+>
+  <div class="font-mono text-sm text-neutral-500 dark:text-neutral-500 mb-2">
+    <span class="terminal-prompt">$</span> <span class="command-text text-neutral-900 dark:text-neutral-100"></span>
+  </div>
+  <div class="font-mono text-sm text-neutral-700 dark:text-neutral-300 output-text ml-4"></div>
+</div>
+
+<script>
+  function animateTerminal(element: HTMLElement) {
+    const command = element.getAttribute('data-command') || '';
+    const output = element.getAttribute('data-output') || '';
+    const delay = parseInt(element.getAttribute('data-delay') || '50');
+    const targetId = element.getAttribute('data-target') || '';
+    
+    const commandText = element.querySelector('.command-text');
+    const outputText = element.querySelector('.output-text');
+    
+    if (!commandText) return;
+    
+    // Fade in terminal
+    element.classList.remove('opacity-0');
+    element.classList.add('opacity-100');
+    
+    // Type command
+    let charIndex = 0;
+    function typeCommand() {
+      if (charIndex < command.length && commandText) {
+        commandText.textContent += command[charIndex];
+        charIndex++;
+        setTimeout(typeCommand, delay);
+      } else {
+        // Show output after command finishes
+        setTimeout(() => {
+          if (outputText && output) {
+            outputText.textContent = output;
+            outputText.classList.add('opacity-100');
+            
+            // After output shows, trigger sequential content reveal
+            setTimeout(() => {
+              if (targetId) {
+                const target = document.getElementById(targetId);
+                if (target) {
+                  // Ensure container is hidden initially
+                  target.style.opacity = '0';
+                  target.classList.add('opacity-0');
+                  
+                  // Find all children to animate
+                  const children = Array.from(target.querySelectorAll('.content-item, .project-item'));
+                  children.forEach((child) => {
+                    (child as HTMLElement).style.opacity = '0';
+                  });
+                  
+                  // Fade in the container first
+                  setTimeout(() => {
+                    target.style.transition = 'opacity 0.5s ease-in';
+                    target.style.opacity = '1';
+                    target.classList.remove('opacity-0');
+                    
+                    // Then reveal children one by one
+                    children.forEach((child, index) => {
+                      setTimeout(() => {
+                        (child as HTMLElement).style.transition = 'opacity 0.5s ease-in';
+                        (child as HTMLElement).style.opacity = '1';
+                      }, index * 250); // 0.25 seconds between each
+                    });
+                  }, 100);
+                }
+              }
+            }, 500);
+          }
+        }, 300);
+      }
+    }
+    
+    setTimeout(typeCommand, 200);
+  }
+
+  // Intersection Observer for scroll animations
+  document.addEventListener('DOMContentLoaded', function() {
+    const terminals = document.querySelectorAll('.terminal-animation');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+          entry.target.classList.add('animated');
+          animateTerminal(entry.target as HTMLElement);
+        }
+      });
+    }, {
+      threshold: 0.3,
+      rootMargin: '0px 0px -100px 0px'
+    });
+
+    terminals.forEach(terminal => {
+      observer.observe(terminal);
+    });
+  });
+</script>
+
+<style>
+  .terminal-animation {
+    transition: opacity 0.5s ease-in;
+  }
+  
+  .output-text {
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+  }
+  
+  .output-text.opacity-100 {
+    opacity: 1;
+  }
+  
+  .content-hidden {
+    opacity: 0;
+  }
+  
+  .content-item, .project-item {
+    opacity: 0;
+  }
+</style>

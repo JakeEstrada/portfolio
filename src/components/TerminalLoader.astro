@@ -1,0 +1,103 @@
+---
+---
+
+<div id="terminal-loader" class="fixed inset-0 z-[9999] bg-black text-green-400 dark:text-green-400 font-mono flex items-center justify-center">
+  <div class="w-full max-w-3xl px-6 md:px-12">
+    <div class="mb-6 text-xs md:text-sm text-green-500/70">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-green-400">jake@portfolio</span>:<span class="text-blue-400">~</span>$ 
+        <span id="terminal-cursor" class="inline-block w-2 h-4 bg-green-400 animate-pulse"> </span>
+      </div>
+    </div>
+    <div id="terminal-output" class="space-y-1 text-xs md:text-sm font-mono">
+      <!-- Commands will be typed here -->
+    </div>
+  </div>
+</div>
+
+<script>
+  const loader = document.getElementById('terminal-loader');
+  const output = document.getElementById('terminal-output');
+  const cursor = document.getElementById('terminal-cursor');
+  
+  if (loader && output) {
+    const commands = [
+      { text: 'cat welcome.txt', delay: 50, output: 'Initializing...' },
+      { text: 'npm run build', delay: 50, output: '✓ Ready' },
+    ];
+
+    let currentIndex = 0;
+    let currentChar = 0;
+    let isTyping = false;
+    let currentCommand = '';
+    let currentLine: HTMLElement | null = null;
+
+    function typeChar() {
+      if (currentIndex >= commands.length) {
+        // All commands done, fade out quickly
+        if (cursor) cursor.style.display = 'none';
+        setTimeout(() => {
+          if (loader) {
+            loader.style.opacity = '0';
+            loader.style.transition = 'opacity 0.2s ease-out';
+            setTimeout(() => {
+              if (loader) loader.style.display = 'none';
+              document.body.style.overflow = '';
+            }, 200);
+          }
+        }, 100);
+        return;
+      }
+
+      const cmd = commands[currentIndex];
+      
+      if (!isTyping) {
+        // Start typing command
+        isTyping = true;
+        currentCommand = cmd.text;
+        currentChar = 0;
+        
+        currentLine = document.createElement('div');
+        currentLine.className = 'flex items-center gap-2 mb-1';
+        currentLine.innerHTML = `
+          <span class="text-green-400">jake@portfolio</span>:<span class="text-blue-400">~</span>$ 
+          <span class="command-text text-green-300"></span>
+        `;
+        if (output) {
+          output.appendChild(currentLine);
+        }
+      }
+
+      const commandText = currentLine?.querySelector('.command-text');
+      if (commandText && currentChar < currentCommand.length) {
+        commandText.textContent += currentCommand[currentChar];
+        currentChar++;
+        setTimeout(typeChar, 10);
+      } else if (currentChar >= currentCommand.length) {
+        // Command finished, show output
+        if (cmd.output && output) {
+          const outputLine = document.createElement('div');
+          outputLine.className = 'text-green-300/70 ml-8 mb-2';
+          outputLine.textContent = cmd.output;
+          output.appendChild(outputLine);
+        }
+        
+        isTyping = false;
+        currentIndex++;
+        setTimeout(typeChar, cmd.delay);
+      }
+    }
+
+    // Prevent scrolling during load
+    document.body.style.overflow = 'hidden';
+    
+    // Start typing immediately
+    setTimeout(typeChar, 50);
+  }
+</script>
+
+<style>
+  #terminal-loader {
+    font-family: 'IBM Plex Mono', 'Monaco', 'Courier New', monospace;
+  }
+</style>

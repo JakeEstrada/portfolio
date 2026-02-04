@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white dark:bg-black text-neutral-900 dark:text-neutral-100 antialiased;
+    font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Monaco', 'Courier New', monospace;
+    font-feature-settings: 'kern' 1;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+    @apply font-semibold tracking-tight;
+    letter-spacing: -0.01em;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  }
+}
+
+@layer components {
+  .terminal-prompt {
+    @apply text-green-500 dark:text-green-400;
+  }
+
+  .terminal-path {
+    @apply text-blue-500 dark:text-blue-400;
+  }
+
+  .terminal-cursor {
+    @apply inline-block w-2 h-4 bg-green-500 dark:bg-green-400 animate-pulse;
+  }
+
+  .btn {
+    @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 font-mono;
+    border: 1px solid;
+  }
+
+  .btn-primary {
+    @apply btn bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 border-neutral-900 dark:border-neutral-100 hover:bg-neutral-800 dark:hover:bg-neutral-200;
+  }
+
+  .btn-secondary {
+    @apply btn bg-transparent border-neutral-300 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:border-neutral-900 dark:hover:border-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-100;
+  }
+
+  .card {
+    @apply transition-all duration-300 border border-neutral-200 dark:border-neutral-900;
+  }
+
+  .card:hover {
+    @apply border-green-500 dark:border-green-400;
+  }
+
+  .tag {
+    @apply inline-block px-2 py-1 text-xs font-mono text-neutral-600 dark:text-neutral-400 border border-neutral-300 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-5xl font-semibold tracking-tight mb-8 text-neutral-900 dark:text-neutral-100 font-mono;
+    letter-spacing: -0.02em;
+  }
+
+  .code-block {
+    @apply bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-900 p-4 font-mono text-sm;
+  }
+
+  .terminal-line {
+    @apply font-mono text-sm;
+  }
+}
+
+::selection {
+  background-color: #22c55e;
+  color: #000;
+}
+
+.dark ::selection {
+  background-color: #22c55e;
+  color: #000;
+}
+
+/* Minimal scrollbar */
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-300 dark:bg-neutral-800;
+}

@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: any;
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+---
+
+<BaseLayout title={`${project.data.title} - Jake Estrada`}>
+  <article class="container mx-auto px-6 md:px-12 py-24 max-w-3xl">
+    <div class="mb-16">
+      <a 
+        href="/projects" 
+        class="font-mono text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 mb-8 inline-block transition-colors"
+      >
+        <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">cd</span> ..
+      </a>
+      <div class="mb-6 font-mono text-sm text-neutral-500 dark:text-neutral-500">
+        <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">cat</span> <span class="terminal-path">projects/{project.slug}/README.md</span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-semibold mb-6 text-neutral-900 dark:text-neutral-100 tracking-tight font-mono">
+        {project.data.title}
+      </h1>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed font-mono">
+        {project.data.summary}
+      </p>
+      <div class="flex flex-wrap gap-2 mb-8">
+        {project.data.tags.map((tag: string) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+      <div class="flex flex-wrap gap-3 mb-12">
+        {project.data.liveUrl && (
+          <a 
+            href={project.data.liveUrl} 
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary"
+          >
+            $ open {project.data.liveUrl}
+          </a>
+        )}
+        {project.data.repoUrl && (
+          <a 
+            href={project.data.repoUrl} 
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-secondary"
+          >
+            $ git clone {project.data.repoUrl}
+          </a>
+        )}
+      </div>
+    </div>
+    
+    <div class="aspect-video mb-16 bg-neutral-100 dark:bg-neutral-900 overflow-hidden border border-neutral-200 dark:border-neutral-900">
+      <img 
+        src={project.data.heroImage} 
+        alt={project.data.title}
+        class="w-full h-full object-cover"
+      />
+    </div>
+
+    <div class="code-block mb-8">
+      <div class="prose prose-sm dark:prose-invert max-w-none prose-headings:text-neutral-900 dark:prose-headings:text-neutral-100 prose-p:text-neutral-700 dark:prose-p:text-neutral-300 prose-a:text-neutral-900 dark:prose-a:text-neutral-100 prose-strong:text-neutral-900 dark:prose-strong:text-neutral-100 font-mono">
+        <Content />
+      </div>
+    </div>
+
+    {project.data.stack && project.data.stack.length > 0 && (
+      <div class="code-block border-t border-neutral-200 dark:border-neutral-900 pt-8">
+        <div class="mb-4 font-mono text-sm text-neutral-500 dark:text-neutral-500">
+          <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">cat</span> package.json
+        </div>
+        <h2 class="text-xl font-semibold mb-6 text-neutral-900 dark:text-neutral-100 font-mono">Tech stack</h2>
+        <div class="flex flex-wrap gap-2">
+          {project.data.stack.map((tech: string) => (
+            <span class="tag">{tech}</span>
+          ))}
+        </div>
+      </div>
+    )}
+  </article>
+</BaseLayout>

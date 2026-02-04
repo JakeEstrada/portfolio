@@ -1,0 +1,65 @@
+---
+import TerminalAnimation from './TerminalAnimation.astro';
+---
+
+<section id="contact" class="container mx-auto px-6 md:px-12 py-24">
+  <div class="max-w-2xl mx-auto text-center">
+    <div class="mb-8">
+      <TerminalAnimation command="cat contact.txt" output="Displaying contact information..." targetId="contact-content" />
+    </div>
+    <div id="contact-content" class="content-hidden opacity-0">
+      <h2 class="section-title content-item">Contact</h2>
+      <div class="code-block mb-8 content-item">
+      <p class="font-mono text-neutral-700 dark:text-neutral-300 mb-6 leading-relaxed">
+        <span class="text-green-500 dark:text-green-400">//</span> Have a project in mind? Want to collaborate?
+      </p>
+      <p class="font-mono text-neutral-700 dark:text-neutral-300 leading-relaxed">
+        <span class="text-green-500 dark:text-green-400">//</span> Just want to say hi? I'd love to hear from you.
+      </p>
+    </div>
+    <div class="flex flex-wrap gap-3 mb-12 justify-center content-item">
+      <a 
+        href="mailto:liminal.innovations@gmail.com" 
+        class="btn-primary"
+      >
+        $ mail liminal.innovations@gmail.com
+      </a>
+      <a 
+        href="/resume.pdf" 
+        target="_blank"
+        class="btn-secondary"
+      >
+        $ cat resume.pdf
+      </a>
+    </div>
+    <div class="code-block border-t border-neutral-200 dark:border-neutral-900 pt-8 content-item">
+      <div class="flex flex-wrap gap-6 font-mono text-sm justify-center">
+        <a 
+          href="https://github.com/JakeEstrada" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+        >
+          <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">open</span> github.com/JakeEstrada
+        </a>
+        <a 
+          href="https://www.linkedin.com/in/jake-estrada-03734a271/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+        >
+          <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">open</span> linkedin.com/in/jake-estrada-03734a271
+        </a>
+        <a 
+          href="https://www.instagram.com/jektesnek/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+        >
+          <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">open</span> instagram.com/jektesnek
+        </a>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>

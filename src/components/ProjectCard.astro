@@ -1,0 +1,45 @@
+---
+interface Props {
+  title: string;
+  summary: string;
+  tags: string[];
+  heroImage: string;
+  slug: string;
+  featured?: boolean;
+}
+
+const { title, summary, tags, heroImage, slug } = Astro.props;
+---
+
+<a 
+  href={`/projects/${slug}`}
+  class="card block group border-b border-neutral-200 dark:border-neutral-900 py-12 first:pt-0 hover:bg-neutral-50 dark:hover:bg-neutral-950 transition-colors"
+>
+  <div class="flex flex-col md:flex-row gap-8 items-start">
+    <div class="flex-1">
+      <div class="mb-2 font-mono text-xs text-neutral-500 dark:text-neutral-500">
+        <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">cd</span> <span class="terminal-path">projects/{slug}</span>
+      </div>
+      <h3 class="text-2xl md:text-3xl font-semibold mb-3 text-neutral-900 dark:text-neutral-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors font-mono">
+        {title}
+      </h3>
+      <p class="text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed font-mono text-sm">
+        {summary}
+      </p>
+      <div class="flex flex-wrap gap-2 justify-center md:justify-start">
+        {tags.map((tag) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    </div>
+    <div class="w-full md:w-64 flex-shrink-0">
+      <div class="aspect-video bg-neutral-100 dark:bg-neutral-900 overflow-hidden border border-neutral-200 dark:border-neutral-900">
+        <img 
+          src={heroImage} 
+          alt={title}
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      </div>
+    </div>
+  </div>
+</a>
