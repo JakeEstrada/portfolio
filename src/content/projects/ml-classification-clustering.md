@@ -1,43 +1,48 @@
 ---
-title: "Machine Learning Classification & Clustering Projects"
+title: "Sales & Economic Impact Analysis"
 date: 2024-04-01
-tags: ["Machine Learning", "Data Science", "Classification"]
-stack: ["Python", "pandas", "scikit-learn"]
-heroImage: "/images/projects/ml-classification.svg"
-summary: "Data science coursework projects implementing K-Nearest Neighbors, K-Means clustering, and evaluation metrics by hand and in code. Worked with confusion matrices, precision/recall, F-scores, and distance metrics."
+tags: ["Data Science", "Applied Analytics", "Geospatial Analysis"]
+stack: ["Python", "pandas", "NumPy", "scikit-learn", "Geospatial mapping", "Regression analysis"]
+heroImage: "/images/projects/ml-classification.webm"
+summary: "Applied data science project analyzing real sales and estimate data from a construction business to understand geographic demand patterns and evaluate macroeconomic impacts on sales performance."
 featured: false
 order: 5
 ---
 
 ## Overview
 
-These projects were part of data science coursework where I implemented fundamental machine learning algorithms from scratch and using libraries. The focus was on understanding the underlying mathematics and evaluation metrics rather than just using pre-built tools.
+An applied data science project analyzing real sales and estimate data from a construction business to understand geographic demand patterns and evaluate whether macroeconomic conditions contributed to a downturn in sales.
 
-## Projects Included
+The project involved end-to-end data ownership: sourcing raw business data, cleaning and transforming it, enriching it with geospatial and economic data, and applying statistical and machine learning techniques to explore potential drivers of sales performance.
 
-### K-Nearest Neighbors (KNN)
-- Implemented KNN algorithm by hand to understand distance metrics and classification logic
-- Worked with various distance metrics (Euclidean, Manhattan, etc.)
-- Analyzed how k-value affects classification performance
+## Data Acquisition & Preparation
 
-### K-Means Clustering
-- Implemented K-Means clustering algorithm from scratch
-- Experimented with different initialization methods
-- Analyzed convergence behavior and cluster quality
+- Obtained raw sales and estimate data directly from business records
+- Cleaned and normalized inconsistent real-world data (missing values, formatting issues, incomplete addresses)
+- Converted customer addresses into latitude and longitude coordinates for spatial analysis
+- Structured datasets to support geographic, temporal, and economic comparisons
 
-### Evaluation Metrics
-- Built confusion matrices to analyze classification performance
-- Calculated precision, recall, and F-scores manually
-- Compared different evaluation approaches for various problem types
+## Geospatial Analysis
 
-## Technical Implementation
+- Visualized sales and estimate activity using latitude/longitude mappings
+- Explored geographic patterns in sales volume and conversion rates
+- Identified regions with higher concentrations of successful sales versus lost estimates
 
-All projects were built using Python with pandas for data manipulation and scikit-learn for comparison and validation. The emphasis was on building reproducible experiments and understanding the mathematical foundations of each algorithm.
+## Economic Analysis
 
-## Key Learnings
+- Integrated macroeconomic indicators to investigate external influences on sales performance
+- Applied LASSO regression to analyze relationships between economic variables and observed sales declines
+- Evaluated whether broader economic conditions aligned with changes in customer conversion behavior
 
-- Deep understanding of distance metrics and their impact on algorithm performance
-- Hands-on experience with evaluation metrics and when to use each
-- Ability to implement algorithms from scratch vs. using libraries
-- Building reproducible experiments and proper experimental methodology
+## Exploratory Machine Learning
 
+- Applied K-Means clustering to explore geographic groupings within the sales data
+- Used clustering results as an exploratory tool to visualize regional structure rather than as a final predictive model
+- Treated clustering as a hypothesis-generation step to guide further analysis
+
+## Key Takeaways
+
+- Demonstrated how messy, real business data can be transformed into structured analytical datasets
+- Showed how geospatial visualization can reveal regional demand patterns not visible in raw tables
+- Explored the role of macroeconomic indicators in business performance using regularized regression
+- Highlighted the difference between exploratory machine learning and production modeling

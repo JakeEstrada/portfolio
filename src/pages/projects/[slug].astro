@@ -66,11 +66,24 @@ const { Content } = await project.render();
     </div>
     
     <div class="aspect-video mb-16 bg-neutral-100 dark:bg-neutral-900 overflow-hidden border border-neutral-200 dark:border-neutral-900">
-      <img 
-        src={project.data.heroImage} 
-        alt={project.data.title}
-        class="w-full h-full object-cover"
-      />
+      {project.data.heroImage.endsWith('.webm') || project.data.heroImage.endsWith('.mp4') || project.data.heroImage.endsWith('.mov') ? (
+        <video 
+          src={project.data.heroImage} 
+          autoplay
+          loop
+          muted
+          playsinline
+          class="w-full h-full object-cover"
+        >
+          Your browser does not support the video tag.
+        </video>
+      ) : (
+        <img 
+          src={project.data.heroImage} 
+          alt={project.data.title}
+          class="w-full h-full object-cover"
+        />
+      )}
     </div>
 
     <div class="code-block mb-8">

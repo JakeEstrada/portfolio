@@ -4,11 +4,13 @@ interface Props {
   summary: string;
   tags: string[];
   heroImage: string;
+  thumbnailImage?: string;
   slug: string;
   featured?: boolean;
 }
 
-const { title, summary, tags, heroImage, slug } = Astro.props;
+const { title, summary, tags, heroImage, thumbnailImage, slug } = Astro.props;
+const displayImage = thumbnailImage || heroImage;
 ---
 
 <a 
@@ -34,11 +36,24 @@ const { title, summary, tags, heroImage, slug } = Astro.props;
     </div>
     <div class="w-full md:w-64 flex-shrink-0">
       <div class="aspect-video bg-neutral-100 dark:bg-neutral-900 overflow-hidden border border-neutral-200 dark:border-neutral-900">
-        <img 
-          src={heroImage} 
-          alt={title}
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+        {displayImage.endsWith('.webm') || displayImage.endsWith('.mp4') || displayImage.endsWith('.mov') ? (
+          <video 
+            src={displayImage} 
+            autoplay
+            loop
+            muted
+            playsinline
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          >
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <img 
+            src={displayImage} 
+            alt={title}
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        )}
       </div>
     </div>
   </div>

@@ -12,6 +12,7 @@ const projectsCollection = defineCollection({
     demoVideoUrl: z.string().optional(),
     featured: z.boolean().default(false),
     heroImage: z.string(),
+    thumbnailImage: z.string().optional(),
     summary: z.string(),
     order: z.number().optional(),
   }),

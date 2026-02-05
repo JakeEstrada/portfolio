@@ -3,7 +3,7 @@ title: "Lightwall — Interactive AI Art Installation"
 date: 2023-06-01
 tags: ["Embedded Systems", "Hardware", "C Programming"]
 stack: ["C", "Arduino", "Sensors", "Stepper Motors", "Embedded Systems"]
-heroImage: "/images/projects/lightwall.svg"
+heroImage: "/images/projects/lightwall.png"
 summary: "Embedded engineering role on an interactive light and motion installation exhibited in a museum. Programmed Arduino-based controllers for stepper motors and radar sensors."
 featured: false
 order: 3

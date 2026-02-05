@@ -2,34 +2,42 @@
 title: "PunchTrack — Time & Activity Tracking System"
 date: 2024-02-01
 tags: ["Web Application", "Hardware Integration", "Time Tracking"]
-stack: ["Python", "Flask", "PostgreSQL", "JavaScript", "Raspberry Pi", "Arduino"]
-heroImage: "/images/projects/punchtrack.svg"
-summary: "Time-tracking system for employees to clock in/out and log receipts and mileage. Started as a Raspberry Pi prototype, later redesigned as a scalable web application."
+stack: ["Python", "Flask", "PostgreSQL", "JavaScript", "Raspberry Pi", "RFID"]
+heroImage: "/images/projects/punchtrack.png"
+summary: "Time-tracking system for employees to clock in/out and log receipts and mileage. Started as a Raspberry Pi prototype with RFID authentication, later redesigned as a scalable web application."
 featured: true
 order: 2
 ---
 
 ## Overview
 
-PunchTrack is a time and activity tracking system I built to help businesses manage employee time, receipts, and mileage. The project started as a hardware prototype on Raspberry Pi and evolved into a full web application with a focus on clean schema design and auditability.
+PunchTrack is a time and activity tracking system built to manage employee clock-ins, receipts, and mileage with a strong emphasis on **data integrity and auditability**. The project began as a **Raspberry Pi–based prototype using RFID authentication** and later evolved into a web application to support scalability and centralized management.
 
-## Evolution
+## Project Evolution
 
-The project began as a prototype running on Raspberry Pi, demonstrating the concept with hardware integration. As the system proved valuable, I redesigned it as a web application, migrating the backend from SQLite to PostgreSQL for better scalability and reliability.
+- Implemented an initial prototype on **Raspberry Pi** with **RFID-based employee authentication**
+- Validated core workflows for clock-in/clock-out and activity logging
+- Redesigned the system as a **web application** to support multiple users and persistent records
+- Migrated the backend from **SQLite to PostgreSQL** to improve reliability, relational integrity, and auditing support
+- Planned future migration to **NVIDIA Jetson Orin Nano** to support more advanced edge capabilities
 
-## Key Features
+## Core Features
 
-- **Time Tracking**: Employees can clock in/out with detailed activity logs
-- **Receipt Management**: Digital receipt logging and tracking
-- **Mileage Tracking**: Automated mileage logging for expense management
-- **Audit Trail**: Clean schema design ensures all records are auditable
-- **Hardware Integration**: Planned biometric and RFID authentication using adapter-based architecture
+- **RFID Time Tracking:** Employees clock in and out using RFID credentials
+- **Receipt Management:** Digital receipt logging tied to employee activity
+- **Mileage Tracking:** Per-entry mileage records for expense tracking
+- **Audit Trail:** Database schema ensures all time and activity records are traceable and verifiable
+- **Extensible Authentication:** Adapter-based architecture isolates RFID hardware logic from core business logic
 
 ## Technical Architecture
 
-The system uses an adapter-based architecture, allowing for future hardware integrations like biometric scanners and RFID readers. The PostgreSQL database was designed with auditability in mind, ensuring all time and activity records can be traced and verified.
+- Backend built with **Python and Flask**, exposing APIs for time, receipt, and mileage records
+- **PostgreSQL schema** designed to preserve historical accuracy and prevent destructive updates
+- RFID authentication handled at the edge (Raspberry Pi), decoupled from application logic
+- Architecture intentionally designed to allow future hardware migration without schema or API changes
 
-## Future Enhancements
+## Design Challenges & Solutions
 
-The system is designed to support biometric and RFID authentication, with the adapter pattern making it easy to add new authentication methods without changing core business logic.
-
+- **Hardware Constraints:** Designed around Raspberry Pi limitations while keeping the system extensible
+- **Auditability:** Modeled schemas to favor immutable records and explicit state transitions
+- **System Evolution:** Ensured hardware changes (e.g., Jetson Orin Nano) would not affect core business logic
