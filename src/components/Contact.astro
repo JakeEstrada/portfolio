@@ -1,5 +1,6 @@
 ---
 import TerminalAnimation from './TerminalAnimation.astro';
+import ContactForm from './ContactForm';
 ---
 
 <section id="contact" class="container mx-auto px-6 md:px-12 py-24">
@@ -31,6 +32,10 @@ import TerminalAnimation from './TerminalAnimation.astro';
       >
         $ cat resume.pdf
       </a>
+    </div>
+    
+    <div class="mb-12 content-item">
+      <ContactForm client:load />
     </div>
     <div class="code-block border-t border-neutral-200 dark:border-neutral-900 pt-8 content-item">
       <div class="flex flex-wrap gap-6 font-mono text-sm justify-center">
