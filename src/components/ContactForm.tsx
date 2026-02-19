@@ -1,5 +1,4 @@
-import { useState, useRef } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { useState, useRef, useEffect } from 'react';
 
 interface FormData {
   email: string;
@@ -16,7 +15,24 @@ export default function ContactForm() {
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [RecaptchaComponent, setRecaptchaComponent] = useState<React.ComponentType<any> | null>(null);
+  const [isClient, setIsClient] = useState(false);
+  const recaptchaRef = useRef<any>(null);
+
+  useEffect(() => {
+    // Only run on client side
+    setIsClient(true);
+    
+    // Dynamically import ReCAPTCHA only on client side
+    import('react-google-recaptcha').then((mod) => {
+      const Component = mod.default || mod;
+      if (Component) {
+        setRecaptchaComponent(Component);
+      }
+    }).catch((err) => {
+      console.error('Failed to load ReCAPTCHA:', err);
+    });
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -128,11 +144,17 @@ export default function ContactForm() {
           </div>
 
           <div className="flex justify-center py-4">
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              sitekey={import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || ''}
-              onChange={(value) => setCaptchaValue(value)}
-            />
+            {isClient && RecaptchaComponent ? (
+              <RecaptchaComponent
+                ref={recaptchaRef}
+                sitekey={import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                onChange={(value: string | null) => setCaptchaValue(value)}
+              />
+            ) : (
+              <div className="text-neutral-500 dark:text-neutral-400 font-mono text-sm">
+                Loading CAPTCHA...
+              </div>
+            )}
           </div>
 
           {status === 'error' && errorMessage && (
