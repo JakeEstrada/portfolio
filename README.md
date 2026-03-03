@@ -1,5 +1,7 @@
 # Jake Estrada - Portfolio Website
 
+# www.jakeestrada.org
+
 A modern, terminal-inspired portfolio website built with Astro, featuring smooth animations, dark mode, and a unique command-line aesthetic.
 
 ## 🚀 Tech Stack
