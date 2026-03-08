@@ -4,6 +4,31 @@ const currentYear = new Date().getFullYear();
 
 <footer class="border-t border-neutral-200 dark:border-neutral-900 mt-24">
   <div class="container mx-auto px-6 md:px-12 py-12">
+    <div class="max-w-2xl mx-auto text-center mb-12">
+      <div class="mb-4 font-mono text-sm">
+        <p class="text-neutral-600 dark:text-neutral-400">
+          <span class="terminal-prompt">$</span> cat contact.txt
+        </p>
+        <p class="text-neutral-700 dark:text-neutral-300 mt-1">Displaying contact information...</p>
+      </div>
+      <h2 class="section-title mb-4">Contact</h2>
+      <div class="code-block mb-6">
+        <p class="font-mono text-neutral-700 dark:text-neutral-300 mb-3 leading-relaxed">
+          <span class="comment-line">//</span> Have a project in mind? Want to collaborate?
+        </p>
+        <p class="font-mono text-neutral-700 dark:text-neutral-300 leading-relaxed">
+          <span class="comment-line">//</span> Just want to say hi? I'd love to hear from you.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-3 justify-center">
+        <a href="/contact" class="btn-primary">
+          $ mail liminal.innovations@gmail.com
+        </a>
+        <a href="/resume.pdf" target="_blank" class="btn-secondary">
+          $ cat resume.pdf
+        </a>
+      </div>
+    </div>
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-neutral-600 dark:text-neutral-400">
       <p>
         <span class="terminal-prompt">$</span> <span class="text-neutral-900 dark:text-neutral-100">echo</span> "© {currentYear} Jake Estrada"
