@@ -16,7 +16,18 @@ Form field IDs (must match your EmailJS template variables):
 - `id="subject"` — subject line
 - `id="message"` — message body
 
-## Optional: use an env variable for the public key
+## Deploying on Vercel (required for the live site)
+
+Your local `.env` is **not** deployed (it’s in `.gitignore`). For the contact form to work on the live site you must set the variable in Vercel:
+
+1. Open your project on [Vercel](https://vercel.com) → **Settings** → **Environment Variables**.
+2. Add:
+   - **Name:** `PUBLIC_EMAILJS_PUBLIC_KEY`
+   - **Value:** your EmailJS public key (e.g. `M5uJuwcgRFLGWBXzn`)
+   - **Environments:** check Production (and Preview if you want)
+3. **Redeploy** the project (Deployments → … on latest → Redeploy). The key is inlined at **build** time, so a new deployment is required after adding the variable.
+
+## Optional: use an env variable for the public key (local)
 
 To override the default public key (e.g. for different environments), add to `.env`:
 
