@@ -1,6 +1,12 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import emailjs from '@emailjs/browser';
+
+const EMAILJS_SERVICE_ID = 'service_albev6a';
+const EMAILJS_TEMPLATE_ID = 'template_8oxgqzt';
+const EMAILJS_PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY ?? 'M5uJuwcgRFLGWBXzn';
 
 interface FormData {
+  name: string;
   email: string;
   subject: string;
   message: string;
@@ -8,30 +14,16 @@ interface FormData {
 
 export default function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
+    name: '',
     email: '',
     subject: '',
     message: '',
   });
-  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-  const [RecaptchaComponent, setRecaptchaComponent] = useState<React.ComponentType<any> | null>(null);
-  const [isClient, setIsClient] = useState(false);
-  const recaptchaRef = useRef<any>(null);
 
   useEffect(() => {
-    // Only run on client side
-    setIsClient(true);
-    
-    // Dynamically import ReCAPTCHA only on client side
-    import('react-google-recaptcha').then((mod) => {
-      const Component = mod.default || mod;
-      if (Component) {
-        setRecaptchaComponent(Component);
-      }
-    }).catch((err) => {
-      console.error('Failed to load ReCAPTCHA:', err);
-    });
+    emailjs.init(EMAILJS_PUBLIC_KEY);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -41,60 +33,51 @@ export default function ContactForm() {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
     setErrorMessage('');
 
-    if (!captchaValue) {
-      setStatus('error');
-      setErrorMessage('Please complete the CAPTCHA');
-      return;
-    }
+    const templateParams = {
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+    };
 
-    try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          captcha: captchaValue,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
+    emailjs
+      .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+      .then(() => {
         setStatus('success');
-        setFormData({ email: '', subject: '', message: '' });
-        setCaptchaValue(null);
-        if (recaptchaRef.current) {
-          recaptchaRef.current.reset();
-        }
-      } else {
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      })
+      .catch((error) => {
+        console.error('EmailJS Error:', error);
         setStatus('error');
-        setErrorMessage(data.error || 'Failed to send message. Please try again.');
-        if (recaptchaRef.current) {
-          recaptchaRef.current.reset();
-        }
-        setCaptchaValue(null);
-      }
-    } catch (error) {
-      setStatus('error');
-      setErrorMessage('Network error. Please check your connection and try again.');
-      if (recaptchaRef.current) {
-        recaptchaRef.current.reset();
-      }
-      setCaptchaValue(null);
-    }
+        setErrorMessage('Failed to send message. Please try again.');
+      });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto text-left">
+    <form id="contact-form" onSubmit={handleSubmit} className="max-w-2xl mx-auto text-left">
       <div className="code-block p-6 md:p-8">
         <div className="space-y-6">
+          <div>
+            <label htmlFor="name" className="block font-mono text-sm text-neutral-700 dark:text-neutral-300 mb-2">
+              <span className="terminal-prompt">$</span> <span>Name:</span>
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 font-mono text-sm bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+              placeholder="Your name"
+            />
+          </div>
+
           <div>
             <label htmlFor="email" className="block font-mono text-sm text-neutral-700 dark:text-neutral-300 mb-2">
               <span className="terminal-prompt">$</span> <span>Email:</span>
@@ -143,20 +126,6 @@ export default function ContactForm() {
             />
           </div>
 
-          <div className="flex justify-center py-4">
-            {isClient && RecaptchaComponent ? (
-              <RecaptchaComponent
-                ref={recaptchaRef}
-                sitekey={import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY || ''}
-                onChange={(value: string | null) => setCaptchaValue(value)}
-              />
-            ) : (
-              <div className="text-neutral-500 dark:text-neutral-400 font-mono text-sm">
-                Loading CAPTCHA...
-              </div>
-            )}
-          </div>
-
           {status === 'error' && errorMessage && (
             <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded">
               <p className="font-mono text-sm text-red-700 dark:text-red-400">
@@ -189,4 +158,3 @@ export default function ContactForm() {
     </form>
   );
 }
-
