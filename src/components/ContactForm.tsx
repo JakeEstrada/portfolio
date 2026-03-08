@@ -3,7 +3,10 @@ import emailjs from '@emailjs/browser';
 
 const EMAILJS_SERVICE_ID = 'service_albev6a';
 const EMAILJS_TEMPLATE_ID = 'template_8oxgqzt';
-const EMAILJS_PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
+
+interface ContactFormProps {
+  publicKey?: string;
+}
 
 interface FormData {
   name: string;
@@ -12,7 +15,8 @@ interface FormData {
   message: string;
 }
 
-export default function ContactForm() {
+export default function ContactForm({ publicKey }: ContactFormProps) {
+  const EMAILJS_PUBLIC_KEY = publicKey ?? import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',

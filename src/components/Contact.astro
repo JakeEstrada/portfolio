@@ -1,6 +1,8 @@
 ---
 import TerminalAnimation from './TerminalAnimation.astro';
 import ContactForm from './ContactForm';
+
+const emailJsPublicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
 ---
 
 <section id="contact" class="container mx-auto px-6 md:px-12 py-24">
@@ -35,7 +37,7 @@ import ContactForm from './ContactForm';
     </div>
     
     <div class="mb-12 content-item">
-      <ContactForm client:only="react" />
+      <ContactForm client:only="react" publicKey={emailJsPublicKey} />
     </div>
     <div class="code-block border-t border-neutral-200 dark:border-neutral-900 pt-8 content-item">
       <div class="flex flex-wrap gap-6 font-mono text-sm justify-center">
