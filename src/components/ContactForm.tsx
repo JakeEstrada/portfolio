@@ -3,7 +3,7 @@ import emailjs from '@emailjs/browser';
 
 const EMAILJS_SERVICE_ID = 'service_albev6a';
 const EMAILJS_TEMPLATE_ID = 'template_8oxgqzt';
-const EMAILJS_PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY ?? 'M5uJuwcgRFLGWBXzn';
+const EMAILJS_PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
 
 interface FormData {
   name: string;
@@ -23,7 +23,7 @@ export default function ContactForm() {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
+    if (EMAILJS_PUBLIC_KEY) emailjs.init(EMAILJS_PUBLIC_KEY);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -45,6 +45,11 @@ export default function ContactForm() {
       message: formData.message,
     };
 
+    if (!EMAILJS_PUBLIC_KEY) {
+      setStatus('error');
+      setErrorMessage('Contact form is not configured. Please set PUBLIC_EMAILJS_PUBLIC_KEY.');
+      return;
+    }
     emailjs
       .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
       .then(() => {

@@ -6,7 +6,7 @@ The portfolio contact form uses [EmailJS](https://www.emailjs.com/) to send mess
 
 - **Service ID**: `service_albev6a`
 - **Template ID**: `template_8oxgqzt`
-- **Public Key**: Set in code (fallback) or via `PUBLIC_EMAILJS_PUBLIC_KEY`
+- **Public Key**: Set via env var `PUBLIC_EMAILJS_PUBLIC_KEY` (see below). Do not commit the real key to the repo.
 
 Form field IDs (must match your EmailJS template variables):
 
@@ -21,7 +21,7 @@ Form field IDs (must match your EmailJS template variables):
 To override the default public key (e.g. for different environments), add to `.env`:
 
 ```
-PUBLIC_EMAILJS_PUBLIC_KEY=M5uJuwcgRFLGWBXzn
+PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key_here
 ```
 
 In Vercel: **Settings** → **Environment Variables** → add `PUBLIC_EMAILJS_PUBLIC_KEY`.
